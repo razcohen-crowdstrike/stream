@@ -166,12 +166,12 @@ func (stream SliceStream[E]) Delete(i, j int) SliceStream[E] {
 }
 
 // IsSortedFunc Returns whether stream is sorted in ascending order.
-// Compare according to the less function
-// - less: return a > b
+// Compare according to the cmp function
+// - cmp: return a - b
 // If the source is empty or nil then true is returned.
-func (stream SliceStream[E]) IsSortedFunc(less func(a, b E) bool) bool {
+func (stream SliceStream[E]) IsSortedFunc(cmp func(a, b E) int) bool {
 	stream.evaluation()
-	return slices.IsSortedFunc(stream.source, less)
+	return slices.IsSortedFunc(stream.source, cmp)
 }
 
 // Limit Returns a stream consisting of the elements of this stream, truncated to be no longer than maxSize in length.
@@ -244,9 +244,9 @@ func (stream SliceStream[E]) Reduce(result E, accumulator func(result E, elem E)
 
 // SortFunc Returns a sorted stream consisting of the elements of this stream.
 // Sorted according to slices.SortFunc.
-func (stream SliceStream[E]) SortFunc(less func(a, b E) bool) SliceStream[E] {
+func (stream SliceStream[E]) SortFunc(cmp func(a, b E) int) SliceStream[E] {
 	stream.evaluation()
-	slices.SortFunc(stream.source, less)
+	slices.SortFunc(stream.source, cmp)
 	return stream
 }
 

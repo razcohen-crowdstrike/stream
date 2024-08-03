@@ -70,7 +70,7 @@ func (stream SliceMappingStream[E, MapE, ReduceE]) Limit(maxSize int) SliceMappi
 }
 
 // SortFunc See: SliceStream.SortFunc
-func (stream SliceMappingStream[E, MapE, ReduceE]) SortFunc(less func(a, b E) bool) SliceMappingStream[E, MapE, ReduceE] {
-	stream.SliceStream = stream.SliceStream.SortFunc(less)
+func (stream SliceMappingStream[E, MapE, ReduceE]) SortFunc(cmp func(a, b E) int) SliceMappingStream[E, MapE, ReduceE] {
+	stream.SliceStream = stream.SliceStream.SortFunc(cmp)
 	return stream
 }

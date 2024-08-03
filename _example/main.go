@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/xyctruth/stream"
 	"strconv"
+	"strings"
+
+	"github.com/xyctruth/stream"
 )
 
 func main() {
@@ -11,7 +13,7 @@ func main() {
 	s1 := stream.NewSlice([]string{"d", "a", "b", "c", "a"}).
 		Filter(func(s string) bool { return s != "b" }).
 		Map(func(s string) string { return "class_" + s }).
-		SortFunc(func(s1, s2 string) bool { return s1 < s2 }).
+		SortFunc(strings.Compare).
 		ToSlice()
 	fmt.Println(s1)
 
@@ -19,7 +21,7 @@ func main() {
 	s2 := stream.NewSliceByComparable([]string{"d", "a", "b", "c", "a"}).
 		Filter(func(s string) bool { return s != "b" }).
 		Map(func(s string) string { return "class_" + s }).
-		SortFunc(func(s1, s2 string) bool { return s1 < s2 }).
+		SortFunc(strings.Compare).
 		Distinct().
 		ToSlice()
 	fmt.Println(s2)
@@ -55,7 +57,7 @@ func main() {
 	s5 := stream.NewSliceByMapping[int, string, string]([]int{1, 2, 3, 4, 5}).
 		Filter(func(v int) bool { return v > 3 }).
 		Map(func(v int) string { return "mapping_" + strconv.Itoa(v) }).
-		Reduce(func(r string, v string) string { return r + v })
+		Reduce("", func(r string, v string) string { return r + v })
 
 	fmt.Println(s5)
 
