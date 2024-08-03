@@ -1,4 +1,4 @@
-module github.com/xyctruth/stream
+module github.com/razcohen-crowdstrike/stream
 
 go 1.18
 
