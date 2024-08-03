@@ -738,7 +738,7 @@ func TestSliceIsSorted(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewSlice(tt.input).IsSortedFunc(func(a, b int) bool { return a < b })
+			got := NewSlice(tt.input).IsSortedFunc(func(a, b int) int { return a - b })
 			assert.Equal(t, tt.want, got)
 		})
 	}
@@ -1026,46 +1026,46 @@ func TestSliceSortFunc(t *testing.T) {
 	tests := []struct {
 		name  string
 		input []int
-		less  func(a, b int) bool
+		cmp   func(a, b int) int
 		want  []int
 	}{
 		{
 			name:  "case",
 			input: []int{1, 2, 1, 5},
-			less:  func(a, b int) bool { return a > b },
+			cmp:   func(a, b int) int { return b - a },
 			want:  []int{5, 2, 1, 1},
 		},
 		{
 			name:  "case",
 			input: []int{1, 2, 1, 5},
-			less:  func(a, b int) bool { return a < b },
+			cmp:   func(a, b int) int { return a - b },
 			want:  []int{1, 1, 2, 5},
 		},
 		{
 			name:  "empty",
 			input: []int{},
-			less:  func(a, b int) bool { return a > b },
+			cmp:   func(a, b int) int { return b - a },
 			want:  []int{},
 		},
 		{
 			name:  "nil",
 			input: nil,
-			less:  func(a, b int) bool { return a > b },
+			cmp:   func(a, b int) int { return b - a },
 			want:  nil,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NewSlice(tt.input).SortFunc(tt.less).ToSlice()
+			got := NewSlice(tt.input).SortFunc(tt.cmp).ToSlice()
 			assert.Equal(t, tt.want, got)
 
-			got = NewSliceByComparable(tt.input).SortFunc(tt.less).ToSlice()
+			got = NewSliceByComparable(tt.input).SortFunc(tt.cmp).ToSlice()
 			assert.Equal(t, tt.want, got)
 
-			got = NewSliceByOrdered(tt.input).SortFunc(tt.less).ToSlice()
+			got = NewSliceByOrdered(tt.input).SortFunc(tt.cmp).ToSlice()
 			assert.Equal(t, tt.want, got)
 
-			got = NewSliceByMapping[int, int, int](tt.input).SortFunc(tt.less).ToSlice()
+			got = NewSliceByMapping[int, int, int](tt.input).SortFunc(tt.cmp).ToSlice()
 			assert.Equal(t, tt.want, got)
 		})
 	}

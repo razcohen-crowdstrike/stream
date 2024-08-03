@@ -83,7 +83,7 @@ func (stream SliceComparableStream[E]) Map(mapper func(E) E) SliceComparableStre
 }
 
 // SortFunc See: SliceStream.SortFunc
-func (stream SliceComparableStream[E]) SortFunc(less func(a, b E) bool) SliceComparableStream[E] {
-	stream.SliceStream = stream.SliceStream.SortFunc(less)
+func (stream SliceComparableStream[E]) SortFunc(cmp func(a, b E) int) SliceComparableStream[E] {
+	stream.SliceStream = stream.SliceStream.SortFunc(cmp)
 	return stream
 }
